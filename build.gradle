@@ -18,8 +18,3 @@ dependencies {
     testCompile 'org.apache.poi:poi:3.15'
     testCompile 'org.apache.poi:poi-ooxml:3.15'
 }
-
-task addWalletsFromExcell (dependsOn: 'classes', type: JavaExec) {
-    main = 'modules/FileParser'
-    classpath = sourceSets.test.runtimeClasspath
-}
