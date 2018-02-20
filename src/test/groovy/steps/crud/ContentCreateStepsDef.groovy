@@ -1,10 +1,10 @@
 package steps.crud
 
-import modules.Request
+import modules.Requests
 
 import static cucumber.api.groovy.EN.Given
 
-Request r = new Request()
+Requests r = new Requests()
 
 Given(~/^Create '(.*)' rides with state '(.*)'$/) { long ridesAmount, String state ->
 

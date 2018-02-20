@@ -3,7 +3,7 @@ package modules
 import wslite.http.auth.*
 import wslite.rest.*
 
-class Request {
+class Requests {
     def static hostName = System.getenv('host.name')
     def static login = System.getenv('login')
     def static password = System.getenv('password')
@@ -18,13 +18,13 @@ class Request {
 
     def static getRequest(path, query) {
         def response = client.get(path: path, query: query)
-        assert 200 == response.response.statusCode
+        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 
     def static postRequest(path, query) {
         def response = client.post(path: path, query: query)
-        assert 200 == response.response.statusCode
+        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 
@@ -33,7 +33,7 @@ class Request {
             type ContentType.JSON
             json body
         }
-        assert 200 == response.response.statusCode
+        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 
@@ -42,7 +42,13 @@ class Request {
             type ContentType.JSON
             json body
         }
-        assert [200, 204].contains(response.response.statusCode)
+        assert response.response.statusCode in [200, 204]
+        response.parsedResponseContent.json
+    }
+
+    def static deleteRequest(path, query) {
+        def response = client.delete(path: path, query: query)
+        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 }
