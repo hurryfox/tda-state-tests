@@ -1,4 +1,4 @@
-Feature: Prepare storage for testing
+Feature: Geo testing
 
   Scenario Outline: Delete street district mappers
     Given Delete street district mapper by district id '<District id>'
@@ -20,7 +20,7 @@ Feature: Prepare storage for testing
       | district | staT |
       | district | grdT |
 
-      | city     | spaT |
+      | city     | spdT |
       | city     | vlaT |
       | city     | artT |
 
@@ -32,66 +32,58 @@ Feature: Prepare storage for testing
       | country  | uaT  |
 
 
-#
-#Feature: Create and check entities
-#
-#  Scenario Outline: Create common geo entities
-#    Given Create geo entity '<Entity>' with parameters '<Parameters>'
-#    Examples:
-#      | Entity   | Parameters                                             |
-#      | country  | {"id":"ruT", "name":"РоссияT"}                         |
-#      | country  | {"id":"byT", "name":"БеларусьT"}                       |
-#      | country  | {"id":"uaT", "name":"УкраинаT"}                        |
-#
-#      | state    | {"id":"pkT", "name":"ПриморскийT", "country":"ruT"}    |
-#      | state    | {"id":"hkT", "name":"ХабаровскийT", "country":"ruT"}   |
-#
-#      | city     | {"id":"spdT", "name":"СпасскT", "district":"pkT"}      |
-#      | city     | {"id":"vlaT", "name":"ВладивостокT", "district":"pkT"} |
-#      | city     | {"id":"artT", "name":"АртёмT", "district":"pkT"}       |
-#
-#      | district | {"id":"grkT", "name":"ГоркаT", "city":"spdT"}          |
-#      | district | {"id":"staT", "name":"СтаT", "city":"spdT"}            |
-#      | district | {"id":"grdT", "name":"ГородT", "city":"spdT"}          |
-#
-#      | street   | {"id":"lenT", "name":"ЛенинскаяT", "city":"spdT"}      |
-#      | street   | {"id":"krsT", "name":"КрестьянскаяT", "city":"spdT"}   |
-#      | street   | {"id":"tlsT", "name":"ТолстогоT", "city":"spdT"}       |
-#
-#  Scenario Outline: Create street district mappers
-#    Given Create street district mapper with parameters '<Parameters>'
-#    Examples:
-#      | Parameters                                                 |
-#      | {"streetId": "lenT", "building": "", "districtId": "grkT"} |
-#      | {"streetId": "krsT", "building": "", "districtId": "staT"} |
-#      | {"streetId": "tlsT", "building": "", "districtId": "grdT"} |
-#
-#
-#
-#Feature: Edit entities
-#
-#  Scenario Outline: Edit common geo entities
-#    Given Edit geo entity '<Entity>' with parameters '<Parameters>'
-#    Examples:
-#      | Entity   | Parameters                                                |
-#      | country  | {"id":"ruT", "name":"РоссияEditedT"}                      |
-#      | state    | {"id":"pkT", "name":"ПриморскийEditedT", "country":"byT"} |
-#      | city     | {"id":"spdT", "name":"СпасскEditedT", "district":"pkT"}   |
-#      | district | {"id":"grkT", "name":"ГоркаEditedT", "city":"vlaT"}       |
-#      | street   | {"id":"lenT", "name":"ЛенинскаяEditedT", "city":"spdT"}   |
-#
-#
-#
-#Feature: Test data constraints
-#
-#  Scenario Outline: Foreign keys
-#    Given Delete geo entity '<Entity>' with child record with id '<Id>'
-#    Examples:
-#      | Entity  | Id   |
-#      | country | ruT  |
-#      | state   | hkT  |
-#      | city    | artT |
-#
+  Scenario Outline: Create common geo entities
+    Given Create geo entity '<Entity>' with parameters '<Parameters>'
+    Examples:
+      | Entity   | Parameters                                           |
+      | country  | {"id":"ruT", "name":"РоссияT"}                       |
+      | country  | {"id":"byT", "name":"БеларусьT"}                     |
+      | country  | {"id":"uaT", "name":"УкраинаT"}                      |
+
+      | state    | {"id":"pkT", "name":"ПриморскийT", "country":"ruT"}  |
+      | state    | {"id":"hkT", "name":"ХабаровскийT", "country":"ruT"} |
+
+      | city     | {"id":"spdT", "name":"СпасскT", "state":"pkT"}       |
+      | city     | {"id":"vlaT", "name":"ВладивостокT", "state":"pkT"}  |
+      | city     | {"id":"artT", "name":"АртёмT", "state":"pkT"}        |
+
+      | district | {"id":"grkT", "name":"ГоркаT", "city":"spdT"}        |
+      | district | {"id":"staT", "name":"СтаT", "city":"spdT"}          |
+      | district | {"id":"grdT", "name":"ГородT", "city":"spdT"}        |
+
+      | street   | {"id":"lenT", "name":"ЛенинскаяT", "city":"spdT"}    |
+      | street   | {"id":"krsT", "name":"КрестьянскаяT", "city":"spdT"} |
+      | street   | {"id":"tlsT", "name":"ТолстогоT", "city":"spdT"}     |
+
+
+  Scenario Outline: Create street district mappers
+    Given Create geo entity 'sd-mapper' with parameters '<Parameters>'
+    Examples:
+      | Parameters                                                   |
+      | {"streetId": "lenT", "building": null, "districtId": "grkT"} |
+      | {"streetId": "krsT", "building": null, "districtId": "staT"} |
+      | {"streetId": "tlsT", "building": null, "districtId": "grdT"} |
+
+
+  Scenario Outline: Edit common geo entities
+    Given Edit geo entity '<Entity>' with parameters '<Parameters>'
+    Examples:
+      | Entity   | Parameters                                                |
+      | country  | {"id":"ruT", "name":"РоссияEditedT"}                      |
+      | state    | {"id":"pkT", "name":"ПриморскийEditedT", "country":"byT"} |
+      | city     | {"id":"spdT", "name":"СпасскEditedT", "state":"pkT"}      |
+      | district | {"id":"grkT", "name":"ГоркаEditedT", "city":"vlaT"}       |
+      | street   | {"id":"lenT", "name":"ЛенинскаяEditedT", "city":"spdT"}   |
+
+
+  Scenario Outline: Foreign keys
+    Given Delete geo entity '<Entity>' with child record with id '<Id>'
+    Examples:
+      | Entity  | Id   |
+      | country | ruT  |
+      | state   | pkT  |
+      | city    | spdT |
+
 #  Scenario Outline: Unique constraints
 #    Given Create non unique geo entity '<Entity>' with parameters '<Parameters>'
 #    Examples:

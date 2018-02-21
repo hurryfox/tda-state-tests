@@ -1,7 +1,8 @@
 package modules
 
-import wslite.http.auth.*
-import wslite.rest.*
+import wslite.http.auth.HTTPBasicAuthorization
+import wslite.rest.ContentType
+import wslite.rest.RESTClient
 
 class Requests {
     def static hostName = System.getenv('host.name')
@@ -11,6 +12,7 @@ class Requests {
 
     static {
         client.httpClient.sslTrustAllCerts = false
+
         if (login && password) {
             client.authorization = new HTTPBasicAuthorization(login, password)
         }
@@ -18,13 +20,11 @@ class Requests {
 
     def static getRequest(path, query) {
         def response = client.get(path: path, query: query)
-        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 
     def static postRequest(path, query) {
         def response = client.post(path: path, query: query)
-        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 
@@ -33,7 +33,6 @@ class Requests {
             type ContentType.JSON
             json body
         }
-        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 
@@ -42,13 +41,11 @@ class Requests {
             type ContentType.JSON
             json body
         }
-        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 
     def static deleteRequest(path, query) {
         def response = client.delete(path: path, query: query)
-        assert response.response.statusCode in [200, 204]
         response.parsedResponseContent.json
     }
 }
