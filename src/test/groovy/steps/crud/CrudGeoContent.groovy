@@ -8,16 +8,11 @@ import static cucumber.api.groovy.EN.Given
 
 Requests r = new Requests()
 
-
 Given(~/^Create geo entity '(.*)' with parameters '(.*)'$/) { entity, parameters ->
     def parametersMap = new JsonSlurper().parseText(parameters)
     def createResponse = r.putJsonRequest("api/geo/$entity", parametersMap)
 
     assert r.getRequest("api/geo/$entity/$createResponse.id", []) != null
-}
-
-Given(~/^Create non unique geo entity '(.*)' with parameters '(.*)'$/) { entity, parameters ->
-
 }
 
 Given(~/^Edit geo entity '(.*)' with parameters '(.*)'$/) { entity, parameters ->
@@ -39,15 +34,19 @@ Given(~/^Delete geo entity '(.*)' with child record with id '(.*)'$/) { entity, 
 
     try {
         getTargetEntity.call().with { r.deleteRequest("api/geo/$entity/$it.id", []) }
-        assert false
+        assert false: 'Exception should be thrown'
     } catch (RESTClientException e) {
         assert new String(e.response.data).contains('could not execute statement; SQL [n/a]; constraint')
     }
 }
 
 Given(~/^Delete nonexistent entity '(.*)' with id '(.*)'$/) { entity, id ->
-
-
+    try {
+        r.deleteRequest("api/geo/$entity/$id", [])
+        assert false: 'Exception should be thrown'
+    } catch (RESTClientException e) {
+        assert new String(e.response.data).contains('entity with such id exists!')
+    }
 }
 
 Given(~/^Delete street district mapper by district id '(.*)'$/) { districtId ->
