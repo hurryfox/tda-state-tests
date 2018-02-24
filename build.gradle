@@ -14,3 +14,20 @@ dependencies {
     testCompile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     testCompile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
 }
+
+test {
+    useJUnit {
+        exclude '/**'
+    }
+}
+
+task testRegression(type: Test) {
+    useJUnit {
+        include 'RunRegressionTests.class'
+    }
+    allJvmArgs = [
+            "-Dhost.name=$hostName",
+            "-Dlogin=$login",
+            "-Dpassword=$password"
+    ]
+}

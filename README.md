@@ -2,15 +2,16 @@
 ## Description
 TBD
 
+
 ## Run tests
-
-**GET and POST requests**
-
-If necessary to use GET and POST requests, need to specify environment variables:
-
+### Run regression tests via gradle
 <pre>
-        host.name=http://localhost:8087
-        login=login
-        password=password
+gradlew testRegression
 </pre>
 
+If need to use specific host, login, password:
+<pre>
+        -PhostName=http://localhost:8087
+        -Plogin=login
+        -Ppassword=password
+</pre>
