@@ -5,9 +5,9 @@ import wslite.rest.ContentType
 import wslite.rest.RESTClient
 
 class Requests {
-    def static hostName = System.getenv('host.name')
-    def static login = System.getenv('login')
-    def static password = System.getenv('password')
+    def static hostName = System.getProperty('host.name')
+    def static login = System.getProperty('login')
+    def static password = System.getProperty('password')
     def static client = new RESTClient(hostName)
 
     static {
@@ -32,6 +32,13 @@ class Requests {
         def response = client.post(path: path) {
             type ContentType.JSON
             json body
+        }
+        response.parsedResponseContent.json
+    }
+
+    def static postMultipartRequest(path, file, fileType, fileName) {
+        def response = client.post(path: path) {
+            multipart 'file', file.bytes, fileType, fileName
         }
         response.parsedResponseContent.json
     }

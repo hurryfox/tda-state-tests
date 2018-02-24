@@ -1,4 +1,4 @@
-#Example
+# Example
 #Scenario Outline: Edit -> Refresh -> Execute
 #Then I add initial '<Initial script>' and concatenate '<Concat script>' Enroll Script to '<Operation type name>' and execute '1000' times
 #
