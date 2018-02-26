@@ -9,12 +9,12 @@ Feature: Rates upload testing
     Given Upload rates of type '<Rates type>' from file '<Rates file>'
     Examples:
       | Rates type | Rates file                                                     |
-      | price-dtd  | src/test/resources/feature/configuration/content/район.xlsx    |
-      | price-ctc  | src/test/resources/feature/configuration/content/пригород.xlsx |
+      | price-dtd  | src/test/resources/regression/configuration/content/район.xlsx    |
+      | price-ctc  | src/test/resources/regression/configuration/content/пригород.xlsx |
 
   Scenario Outline: Check rates
     Given Check rates content of type '<Rates type>' from file '<Expected data file>'
     Examples:
       | Rates type | Expected data file                                             |
-      | price-dtd  | src/test/resources/feature/configuration/content/район.json    |
-      | price-ctc  | src/test/resources/feature/configuration/content/пригород.json |
+      | price-dtd  | src/test/resources/regression/configuration/content/район.json    |
+      | price-ctc  | src/test/resources/regression/configuration/content/пригород.json |

@@ -25,8 +25,8 @@ Given(~/^Edit geo entity '(.*)' with parameters '(.*)'$/) { entity, parameters -
 Given(~/^Delete geo entity '(.*)' with id '(.*)'$/) { entity, id ->
     def getTargetEntity = { r.getRequest("api/geo/$entity/$id", []) }
 
-    getTargetEntity.call()?.with { r.deleteRequest("api/geo/$entity/$it.id", []) }
-    assert getTargetEntity.call() == null
+    getTargetEntity()?.with { r.deleteRequest("api/geo/$entity/$it.id", []) }
+    assert getTargetEntity() == null
 }
 
 Given(~/^Delete geo entity '(.*)' with child record with id '(.*)'$/) { entity, id ->
@@ -55,6 +55,6 @@ Given(~/^Delete street district mapper by district id '(.*)'$/) { districtId ->
                 .findAll { it.districtId == districtId }
     }
 
-    getTargetMappers.call().each { r.deleteRequest("api/geo/sd-mapper/$it.id", []) }
-    assert getTargetMappers.call().empty
+    getTargetMappers().each { r.deleteRequest("api/geo/sd-mapper/$it.id", []) }
+    assert getTargetMappers().empty
 }
