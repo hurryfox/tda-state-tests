@@ -1,19 +1,19 @@
 package modules
 
 class Store {
-    static vars = new HashMap<String, Object>()
-    static list = new ArrayList<Object>()
+    static map = [:]
+    static list = []
 
     def static setOnlyNotNullVar(name, value){
         value.removeIf{it == null}
-        vars.put(name, value)
+        map.put(name, value)
     }
 
     def static setVar(name, value) {
-        vars.put(name, value)
+        map.put(name, value)
     }
 
     def static getVar(value) {
-       vars.get(value)
+        map.get(value)
     }
 }

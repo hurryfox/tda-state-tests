@@ -1,10 +1,31 @@
 package steps.crud
 
+import cucumber.api.DataTable
 import modules.Requests
+import modules.Store
 
 import static cucumber.api.groovy.EN.Given
+import static cucumber.api.groovy.EN.When
 
 Requests r = new Requests()
+Store s = new Store()
+
+When(~/^Create document '(.*)' with properties(:| and save it to '(.*)':)$/) { documentType, action, varName, DataTable rawData ->
+    Map data = [:] << rawData.asMap(String.class, String.class)
+
+    if(documentType == 'client') {
+        data.ridesAmount = data.ridesAmount as Integer
+    }
+
+    r.putJsonRequest("api/$documentType", data)
+
+    if (varName) {
+        s.map << [("$varName" as String): data]
+    }
+}
+
+
+
 
 Given(~/^Create '(.*)' rides with state '(.*)'$/) { long ridesAmount, String state ->
 

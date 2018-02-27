@@ -1,10 +1,16 @@
 Feature: Client management test
 
   Scenario: Client test
-    When  Create document 'client' with properties:
+    When Create document 'client' with properties:
       | login       | +78889991122 |
       | firstName   | Polly        |
       | lastName    | Crocodile    |
+      | ridesAmount | 1            |
+
+    Then Create document 'client' with properties and save it to 'clientId':
+      | login       | +78889991133 |
+      | firstName   | Hannah       |
+      | lastName    | Giraffe      |
       | ridesAmount | 7            |
 
     Then Check client with login '+78889991122'
