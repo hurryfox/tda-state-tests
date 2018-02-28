@@ -13,7 +13,7 @@ Store s = new Store()
 When(~/^Create document '(.*)' with properties(:| and save it to '(.*)':)$/) { documentType, action, varName, DataTable rawData ->
     Map data = [:] << rawData.asMap(String.class, String.class)
 
-    if(documentType == 'client') {
+    if (documentType == 'client') {
         data.ridesAmount = data.ridesAmount as Integer
     }
 
@@ -24,8 +24,14 @@ When(~/^Create document '(.*)' with properties(:| and save it to '(.*)':)$/) { d
     }
 }
 
+When(~/^Check client with login '(.*)' and property '(.*)'$/) { login, varName ->
+    def expectedProperties = s.map["$varName"]
+    expectedProperties << [rideFree: false, previousRides: []]
 
+    def clientData = r.getRequest("api/client/check/$login", [])
 
+    assert expectedProperties == expectedProperties.intersect(clientData)
+}
 
 Given(~/^Create '(.*)' rides with state '(.*)'$/) { long ridesAmount, String state ->
 

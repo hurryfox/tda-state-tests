@@ -13,7 +13,7 @@ Feature: Client management test
       | lastName    | Giraffe      |
       | ridesAmount | 7            |
 
-    Then Check client with login '+78889991122'
+    Then Check client with login '+78889991133' and property 'clientId'
 
     When Evaluate ride with properties and save result to 'cm.ctc.evaluate':
       | client              | +79147654321   |
