@@ -1,12 +1,11 @@
 package steps
 
-import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import modules.Requests
+import modules.HttpRequest
 
 import static cucumber.api.groovy.EN.Given
 
-Requests r = new Requests()
+HttpRequest r = new HttpRequest()
 
 
 Given(~/^Upload rates of type '(.*)' from file '(.*)'$/) { entityType, filePath ->

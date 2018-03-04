@@ -1,23 +1,23 @@
 package steps.crud
 
 import groovy.json.JsonSlurper
-import modules.Requests
+import modules.HttpRequest
 import wslite.rest.RESTClientException
 
 import static cucumber.api.groovy.EN.Given
 
-Requests r = new Requests()
+HttpRequest r = new HttpRequest()
 
 Given(~/^Create geo entity '(.*)' with parameters '(.*)'$/) { entity, parameters ->
     def parametersMap = new JsonSlurper().parseText(parameters)
-    def createResponse = r.putJsonRequest("api/geo/$entity", parametersMap)
+    def createResponse = r.putRequest("api/geo/$entity", parametersMap)
 
     assert r.getRequest("api/geo/$entity/$createResponse.id", []) != null
 }
 
 Given(~/^Edit geo entity '(.*)' with parameters '(.*)'$/) { entity, parameters ->
     def parametersMap = new JsonSlurper().parseText(parameters)
-    def createResponse = r.putJsonRequest("api/geo/$entity", parametersMap)
+    def createResponse = r.putRequest("api/geo/$entity", parametersMap)
 
     assert r.getRequest("api/geo/$entity/$createResponse.id", []) == parametersMap
 }

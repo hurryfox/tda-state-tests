@@ -4,7 +4,7 @@ import wslite.http.auth.HTTPBasicAuthorization
 import wslite.rest.ContentType
 import wslite.rest.RESTClient
 
-class Requests {
+class HttpRequest {
     def static hostName = System.getProperty('host.name')
     def static login = System.getProperty('login')
     def static password = System.getProperty('password')
@@ -23,12 +23,7 @@ class Requests {
         response.parsedResponseContent.json
     }
 
-    def static postRequest(path, query) {
-        def response = client.post(path: path, query: query)
-        response.parsedResponseContent.json
-    }
-
-    def static postJsonRequest(path, body) {
+    def static postRequest(path, body) {
         def response = client.post(path: path) {
             type ContentType.JSON
             json body
@@ -43,7 +38,7 @@ class Requests {
         response.parsedResponseContent.json
     }
 
-    def static putJsonRequest(path, body) {
+    def static putRequest(path, body) {
         def response = client.put(path: path) {
             type ContentType.JSON
             json body

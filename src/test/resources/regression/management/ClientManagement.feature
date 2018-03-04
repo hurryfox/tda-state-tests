@@ -1,6 +1,6 @@
 Feature: Client management test
 
-  Scenario: Client test
+  Scenario: Client management test
     When Create document 'client' with properties:
       | login       | +78889991122 |
       | firstName   | Polly        |
@@ -15,15 +15,65 @@ Feature: Client management test
 
     Then Check client with login '+78889991133' and property 'clientId'
 
-    When Evaluate ride with properties and save result to 'cm.ctc.evaluate':
-      | client              | +79147654321   |
+    Then Create document 'client' with properties and save it to 'clientId':
+      | login       | +78889991144 |
+      | firstName   | Monica       |
+      | lastName    | Lion         |
+      | ridesAmount | 9            |
+
+# Price evaluation
+    # Check ctc if normal
+    When Evaluate ride with properties and price '300':
+      | client              | +78889991122   |
       | rawFromAddress.city | Спасск-Дальний |
       | rawToAddress.city   | Бусевка        |
 
-    Then Assert equality of 'cm.ctc.evaluate' and properties:
-      | single.value | 130 |
+    When Evaluate ride with properties and price '370':
+      | client              | +78889991122   |
+      | rawFromAddress.city | Спасск-Дальний |
+      | rawToAddress.city   | Прохоры        |
+
+    When Evaluate ride with properties and price '500':
+      | client              | +78889991122   |
+      | rawFromAddress.city | Спасск-Дальний |
+      | rawToAddress.city   | Кнорринг       |
+
+    When Evaluate ride with properties and price '250':
+      | client              | +78889991122   |
+      | rawFromAddress.city | Спасск-Дальний |
+      | rawToAddress.city   | Дачи солнечные |
+
+    When Evaluate ride with properties and price '250':
+      | client              | +78889991122       |
+      | rawFromAddress.city | Спасск-Дальний СТА |
+      | rawToAddress.city   | Заманиха     |
+
+    When Evaluate ride with properties and price 'null':
+      | client              | +78889991122   |
+      | rawFromAddress.city | Спасск-Дальний |
+      | rawToAddress.city   | Владивосток    |
+
+    When Evaluate ride with properties and price 'null':
+      | client              | +78889991122   |
+      | rawFromAddress.city | Спасск-Дальний |
+      | rawToAddress.city   | Хабаровск      |
+
+    When Evaluate ride with properties and price 'null':
+      | client              | +78889991122   |
+      | rawFromAddress.city | Спасск-Дальний |
+      | rawToAddress.city   | Находка        |
 
 
+    # Check ctc if vip
+    # Check ctc if free
+
+    # Check dtd if normal
+    # Check dtd if vip
+    # Check dtd if free
+
+
+
+# Rides creation
 
 
   # Create ride
