@@ -18,7 +18,7 @@ Feature: Client management test
       | lastName    | Crocodile    |
       | ridesAmount | 1            |
 
-    Then Create document 'client' with properties and save it to 'clientId':
+    When Create document 'client' with properties and save it to 'clientId':
       | login       | +78889991133 |
       | firstName   | Hannah       |
       | lastName    | Giraffe      |
@@ -26,13 +26,13 @@ Feature: Client management test
 
     Then Check client with login '+78889991133' and property 'clientId'
 
-    Then Create document 'client' with properties:
+    When Create document 'client' with properties:
       | login       | +78889991144 |
       | firstName   | Monica       |
       | lastName    | Lion         |
       | ridesAmount | 9            |
 
-    Then Create document 'client' with properties:
+    When Create document 'client' with properties:
       | login       | +78889991155 |
       | firstName   | Jerry        |
       | lastName    | Cat          |
