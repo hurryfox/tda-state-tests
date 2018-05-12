@@ -2,6 +2,7 @@ package modules.envelope
 
 import java.time.DayOfWeek
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
 /**
@@ -20,18 +21,18 @@ class DateTimeEnvelope {
 
     @Override
     String toString() {
-        this.date.toString()
+        this.date.format(DateTimeFormatter.ISO_DATE_TIME)
     }
 
-    Map<String, DayOfWeek> weekdaysMapper = [MONDAY   : DayOfWeek.MONDAY,
-                                             TUESDAY  : DayOfWeek.TUESDAY,
-                                             WEDNESDAY: DayOfWeek.WEDNESDAY,
-                                             THURSDAY : DayOfWeek.THURSDAY,
-                                             FRIDAY   : DayOfWeek.FRIDAY,
-                                             SATURDAY : DayOfWeek.SATURDAY,
-                                             SUNDAY   : DayOfWeek.SUNDAY]
+    final Map<String, DayOfWeek> WEEKDAYS_MAPPER = [MONDAY   : DayOfWeek.MONDAY,
+                                                    TUESDAY  : DayOfWeek.TUESDAY,
+                                                    WEDNESDAY: DayOfWeek.WEDNESDAY,
+                                                    THURSDAY : DayOfWeek.THURSDAY,
+                                                    FRIDAY   : DayOfWeek.FRIDAY,
+                                                    SATURDAY : DayOfWeek.SATURDAY,
+                                                    SUNDAY   : DayOfWeek.SUNDAY]
 
-    DateTimeEnvelope dateTime(String dateTime) {
+    DateTimeEnvelope parse(String dateTime) {
         date = LocalDateTime.parse(dateTime)
         this
     }
@@ -52,7 +53,9 @@ class DateTimeEnvelope {
     }
 
     DateTimeEnvelope next(String dayOfWeek) {
-        date = date.with(TemporalAdjusters.next(weekdaysMapper[dayOfWeek]))
+        assert WEEKDAYS_MAPPER[dayOfWeek]: "No such day of week { $dayOfWeek } in mapper"
+
+        date = date.with(TemporalAdjusters.next(WEEKDAYS_MAPPER[dayOfWeek]))
         this
     }
 }
