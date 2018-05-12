@@ -2,66 +2,52 @@ package modules.envelope
 
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjuster
 import java.time.temporal.TemporalAdjusters
 
 /**
  *  Usage examples in self tests
  */
 class DateTimeEnvelope {
-    final Map<String, DayOfWeek> WEEKDAYS_MAPPER = [MONDAY   : DayOfWeek.MONDAY,
-                                                    TUESDAY  : DayOfWeek.TUESDAY,
-                                                    WEDNESDAY: DayOfWeek.WEDNESDAY,
-                                                    THURSDAY : DayOfWeek.THURSDAY,
-                                                    FRIDAY   : DayOfWeek.FRIDAY,
-                                                    SATURDAY : DayOfWeek.SATURDAY,
-                                                    SUNDAY   : DayOfWeek.SUNDAY]
-
-    LocalDateTime date
-
     private DateTimeEnvelope() {
 
     }
 
     static LocalDateTime execute(String command) {
-        def result = Eval.x(new DateTimeEnvelope(), "x.${command}")
+        def result = Eval.xy(Shortcuts, LocalDateTime, "y.${command}")
 
-        if(result instanceof LocalDateTime) {
+        if (result instanceof LocalDateTime) {
             result as LocalDateTime
-        } else if(result instanceof DateTimeEnvelope) {
-            result.date
         } else {
             throw new RuntimeException("Wrong envelope result type ${result.class.getTypeName()}")
         }
     }
 
-    @Override
-    String toString() {
-        this.date.format(DateTimeFormatter.ISO_DATE_TIME)
-    }
+    private static class Shortcuts {
+        static final Map<String, DayOfWeek> WEEKDAYS_MAPPER = [MONDAY   : DayOfWeek.MONDAY,
+                                                               TUESDAY  : DayOfWeek.TUESDAY,
+                                                               WEDNESDAY: DayOfWeek.WEDNESDAY,
+                                                               THURSDAY : DayOfWeek.THURSDAY,
+                                                               FRIDAY   : DayOfWeek.FRIDAY,
+                                                               SATURDAY : DayOfWeek.SATURDAY,
+                                                               SUNDAY   : DayOfWeek.SUNDAY]
 
-    DateTimeEnvelope parse(String dateTime) {
-        date = LocalDateTime.parse(dateTime)
-        this
-    }
+        static TemporalAdjuster tempAdjuster(String direction, String dayOfWeek) {
+            assert WEEKDAYS_MAPPER[dayOfWeek]: "No such day of week { $dayOfWeek } in mapper"
 
-    DateTimeEnvelope now() {
-        date = LocalDateTime.now()
-        this
-    }
+            Map taMapper = [next          : { TemporalAdjusters.next(it) },
+                            nextOrSame    : { TemporalAdjusters.nextOrSame(it) },
+                            previous      : { TemporalAdjusters.previous(it) },
+                            previousOrSame: { TemporalAdjusters.previousOrSame(it) }]
 
-    DateTimeEnvelope next(String dayOfWeek) {
-        assert WEEKDAYS_MAPPER[dayOfWeek]: "No such day of week { $dayOfWeek } in mapper"
+            taMapper[direction].call(WEEKDAYS_MAPPER[dayOfWeek])
+        }
 
-        date = date.with(TemporalAdjusters.next(WEEKDAYS_MAPPER[dayOfWeek]))
-        this
-    }
+        static int random(Integer min, Integer max) {
+            assert (min < max && max in 1..30): 'Not appropriate range of days, use [1..30]'
 
-    DateTimeEnvelope minusRandomDays(Integer min, Integer max) {
-        assert (min < max && max in 1..30): 'Not appropriate range of days, use [1..30]'
-
-        date = date.minusDays(new Random().nextInt((max - min) + 1) + min)
-        this
+            new Random().nextInt((max - min) + 1) + min
+        }
     }
 }
 

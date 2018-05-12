@@ -7,10 +7,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class DateTimeEnvelopeTest {
-
     @Test
     void customCommandsTest() {
-        String command = "parse('2018-05-15T14:46:32').next('FRIDAY').minusRandomDays(1, 5)"
+        String command = "parse('2018-05-15T14:46:32').with(x.tempAdjuster('next', 'FRIDAY')).minusDays(x.random(1, 5))"
 
         LocalDateTime after = LocalDateTime.parse('2018-05-13T14:46:32')
         LocalDateTime before = LocalDateTime.parse('2018-05-17T14:46:32')
@@ -21,7 +20,7 @@ class DateTimeEnvelopeTest {
 
     @Test
     void mixCommandsTest() {
-        String command = "parse('2018-05-15T14:46:32').next('FRIDAY').date.minusWeeks(3).plusYears(5)"
+        String command = "parse('2018-05-15T14:46:32').with(x.tempAdjuster('next', 'FRIDAY')).minusWeeks(3).plusYears(5)"
 
         DateTimeEnvelope.execute(command)
                 .format(DateTimeFormatter.ISO_DATE_TIME)
